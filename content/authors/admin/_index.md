@@ -1,24 +1,24 @@
 ---
 # Display name
-title: Alice Wu (吳恩達)
+title: Yusi Yao (姚羽思)
 
 # Is this the primary user of the site?
 superuser: true
 
 # Role/position
-role: ''
+role: Pension Analyst
 
 # Status emoji
-status:
+status: 
   icon: ☕️
 
 # Organizations/Affiliations
-#organizations:
-#- name: 腾讯
-#  url: ""
+organizations:
+- name: College of the Holy Cross
+  url: ""
 
 # Short bio (displayed in user profile at end of posts)
-bio: My research interests include distributed robotics, mobile computing and programmable matter.
+bio: Data and Games!
 
 #interests:
 #- Artificial Intelligence
@@ -45,12 +45,13 @@ social:
   - icon: envelope
     icon_pack: fas
     link: 'about/#contact' # For a direct email link, use "mailto:test@example.org".
+    mailto: 
   - icon: twitter
     icon_pack: fab
     link: https://twitter.com/wowchemy
   - icon: instagram
     icon_pack: fab
-    link: https://instagram.com/geocushen
+    link: https://www.instagram.com/roy_yao1109/
 # Uncomment below for Github link
 #- icon: github
 #  icon_pack: fab
@@ -66,8 +67,8 @@ social:
 #email: ""
 ---
 
-Alice Wu is a professor of artificial intelligence at the Stanford AI Lab. Her research interests include distributed robotics, mobile computing and programmable matter. She leads the Robotic Neurobiology group, which develops self-reconfiguring robots, systems of self-organizing robots, and mobile sensor networks.
+“许多年来，我问过无数人的故乡何在，大多都不知所云。故乡于很多人来说，是必须要扔掉的裹脚布；仿佛不遗忘，他们便难以飞得更高走得更远。而我，若干年来却像一个遗老，总是沉浸在往事的泥淖中，在诗酒猖狂之余，常常失魂落魄地站成了一段乡愁。”  —— 野夫
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed neque elit, tristique placerat feugiat ac, facilisis vitae arcu. Proin eget egestas augue. Praesent ut sem nec arcu pellentesque aliquet. Duis dapibus diam vel metus tempus vulputate.
+
 
 {{< icon name="download" pack="fas" >}} {{< staticref "uploads/resume.pdf" "newtab" >}}Download{{< /staticref >}} my resumé as a PDF.
