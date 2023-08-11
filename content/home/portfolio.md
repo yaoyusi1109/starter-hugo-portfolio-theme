@@ -28,12 +28,12 @@ content:
   filter_button:
     - name: All
       tag: '*'
-    - name: Machine Learning
-      tag: ML
-    - name: Computer Vision
-      tag: CV
-    - name: NLP
-      tag: NLP
+    - name: Web Design
+      tag: WD
+    - name: Actuarial Science
+      tag: AS
+    - name: Real Estate
+      tag: ES
 
 design:
   columns: '1'
