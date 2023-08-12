@@ -33,7 +33,7 @@ content:
     - name: Actuarial Science
       tag: AS
     - name: Real Estate
-      tag: ES
+      tag: RE
 
 design:
   columns: '1'
