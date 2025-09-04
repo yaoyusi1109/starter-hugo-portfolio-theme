@@ -44,8 +44,7 @@ bio: Data and Games!
 social:
   - icon: envelope
     icon_pack: fas
-    link: 'about/#contact' # For a direct email link, use "mailto:test@example.org".
-    mailto: 
+    link: 'mailto:yao.yusi@outlook.com' 
   - icon: twitter
     icon_pack: fab
     link: https://twitter.com/yaoyusi1999
@@ -64,7 +63,7 @@ social:
 #   link: files/cv.pdf
 
 # Enter email to display Gravatar (if Gravatar enabled in Config)
-#email: ""
+email: "yao.yusi@outlook.com"
 ---
 
 “许多年来，我问过无数人的故乡何在，大多都不知所云。故乡于很多人来说，是必须要扔掉的裹脚布；仿佛不遗忘，他们便难以飞得更高走得更远。而我，若干年来却像一个遗老，总是沉浸在往事的泥淖中，在诗酒猖狂之余，常常失魂落魄地站成了一段乡愁。”  —— 野夫
