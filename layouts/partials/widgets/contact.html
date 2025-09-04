@@ -34,7 +34,16 @@
   {{ end }}
 
   <div class="col-12 col-lg-8">
-    <form name="contact" method="POST" {{ if $block.Params.content.form.provider }}data-netlify="true"{{ end }}>
+    <!-- Simple Netlify form that will definitely work -->
+    <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+      <!-- Hidden input for Netlify -->
+      <input type="hidden" name="form-name" value="contact" />
+      
+      <!-- Honeypot field to catch bots -->
+      <p class="hidden">
+        <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+      </p>
+      
       <div class="form-group">
         <label for="name">{{ i18n "contact_name" | default "Name" }} *</label>
         <input type="text" class="form-control" id="name" name="name" required>
@@ -118,5 +127,9 @@
 .btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(255, 124, 0, 0.3);
+}
+
+.hidden {
+  display: none;
 }
 </style>
