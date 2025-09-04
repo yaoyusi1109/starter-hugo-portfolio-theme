@@ -1,0 +1,20 @@
+{{ if and (not hugo.IsServer) (.Site.Params.marketing.analytics.google_analytics) }}
+  {{ if not (in (string .Site.BaseURL) "localhost") }}
+    {{ if not (in (string .Site.BaseURL) "127.0.0.1") }}
+      {{ if not (in (string .Site.BaseURL) "192.168.") }}
+        {{ if not (in (string .Site.BaseURL) "10.") }}
+          {{ if not (in (string .Site.BaseURL) "172.") }}
+            <!-- Google Analytics -->
+            <script async src="https://www.googletagmanager.com/gtag/js?id={{ .Site.Params.marketing.analytics.google_analytics }}"></script>
+            <script>
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '{{ .Site.Params.marketing.analytics.google_analytics }}');
+            </script>
+          {{ end }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}

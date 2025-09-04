@@ -21,10 +21,10 @@ marketing:
     description: 'All about me.'
     twitter: '@yaoyusi1999'
   analytics:
-    google_analytics: ''
-    baidu_tongji: ''
-    google_tag_manager: ''
-    microsoft_clarity: ''
+    google_analytics: null
+    baidu_tongji: null
+    google_tag_manager: null
+    microsoft_clarity: null
   verification:
     google: ''
     baidu: ''
