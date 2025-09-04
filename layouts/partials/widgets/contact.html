@@ -1,135 +1,510 @@
 {{ $block := .Block }}
-{{ $id := .Block.Content.form.id }}
+{{ $id := $block.Content.form.id }}
 
 {{ $block.Scratch.Set "has_contact_form" true }}
 
-<div class="row contact-widget">
-  <div class="col-12 col-lg-8 section-heading">
+<div class="contact-container">
+  <!-- Header Section -->
+  <div class="contact-header">
     {{ with $block.Title }}
-      <h1>{{ . | markdownify | emojify }}</h1>
+      <h1 class="contact-title">{{ . | markdownify | emojify }}</h1>
     {{ end }}
     {{ with $block.Params.subtitle }}
-      <p>{{ . | markdownify | emojify }}</p>
+      <p class="contact-subtitle">{{ . | markdownify | emojify }}</p>
     {{ end }}
   </div>
-</div>
 
-<div class="row">
-  {{ if $block.Params.content.contact_links }}
-    {{ $contact_links := $block.Params.content.contact_links }}
-    <div class="col-12 col-lg-4">
-      <div class="contact-info">
-        <h3>{{ i18n "contact_info" | default "Contact Info" }}</h3>
-        {{ range $contact_links }}
-          <div class="contact-item">
-            <i class="{{ .icon_pack }} {{ .icon }}"></i>
-            <span>{{ .name }}</span>
-            {{ if .link }}
-              <a href="{{ .link }}" target="_blank" rel="noopener">{{ .name }}</a>
-            {{ end }}
+  <div class="contact-content">
+    <!-- Contact Info Sidebar -->
+    {{ if $block.Params.content.contact_links }}
+      {{ $contact_links := $block.Params.content.contact_links }}
+      <div class="contact-info-sidebar">
+        <div class="contact-info-card">
+          <h3 class="info-title">
+            <i class="fas fa-info-circle"></i>
+            {{ i18n "contact_info" | default "Contact Info" }}
+          </h3>
+          {{ range $contact_links }}
+            <div class="contact-item">
+              <div class="contact-icon">
+                <i class="{{ .icon_pack }} {{ .icon }}"></i>
+              </div>
+              <div class="contact-details">
+                {{ if .link }}
+                  <a href="{{ .link }}" target="_blank" rel="noopener" class="contact-link">
+                    {{ .name }}
+                  </a>
+                {{ else }}
+                  <span>{{ .name }}</span>
+                {{ end }}
+              </div>
+            </div>
+          {{ end }}
+        </div>
+      </div>
+    {{ end }}
+
+    <!-- Dynamic Contact Form -->
+    <div class="contact-form-container">
+      <div class="form-card">
+        <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="dynamic-form">
+          <!-- Hidden inputs for Netlify -->
+          <input type="hidden" name="form-name" value="contact" />
+          
+          <!-- Honeypot field -->
+          <div class="honeypot">
+            <label>Don't fill this out if you're human: <input name="bot-field" /></label>
           </div>
-        {{ end }}
+          
+          <!-- Form Fields with Dynamic Styling -->
+          <div class="form-row">
+            <div class="form-group floating-label">
+              <input type="text" class="form-control" id="name" name="name" required>
+              <label for="name" class="floating-label-text">
+                <i class="fas fa-user"></i>
+                {{ i18n "contact_name" | default "Your Name" }}
+              </label>
+              <div class="focus-border"></div>
+            </div>
+            
+            <div class="form-group floating-label">
+              <input type="email" class="form-control" id="email" name="email" required>
+              <label for="email" class="floating-label-text">
+                <i class="fas fa-envelope"></i>
+                {{ i18n "contact_email" | default "Your Email" }}
+              </label>
+              <div class="focus-border"></div>
+            </div>
+          </div>
+          
+          <div class="form-group floating-label">
+            <input type="text" class="form-control" id="subject" name="subject" required>
+            <label for="subject" class="floating-label-text">
+              <i class="fas fa-tag"></i>
+              {{ i18n "contact_subject" | default "Subject" }}
+            </label>
+            <div class="focus-border"></div>
+          </div>
+          
+          <div class="form-group floating-label">
+            <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+            <label for="message" class="floating-label-text">
+              <i class="fas fa-comment"></i>
+              {{ i18n "contact_message" | default "Your Message" }}
+            </label>
+            <div class="focus-border"></div>
+          </div>
+          
+          {{ if $block.Params.content.form.netlify.captcha }}
+            <div class="form-group captcha-group">
+              <div data-netlify-recaptcha="true"></div>
+            </div>
+          {{ end }}
+          
+          <button type="submit" class="submit-btn">
+            <span class="btn-text">Send Message</span>
+            <span class="btn-icon">
+              <i class="fas fa-paper-plane"></i>
+            </span>
+            <div class="btn-ripple"></div>
+          </button>
+        </form>
       </div>
     </div>
-  {{ end }}
-
-  <div class="col-12 col-lg-8">
-    <!-- Simple Netlify form that will definitely work -->
-    <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-      <!-- Hidden input for Netlify -->
-      <input type="hidden" name="form-name" value="contact" />
-      
-      <!-- Honeypot field to catch bots -->
-      <p class="hidden">
-        <label>Don't fill this out if you're human: <input name="bot-field" /></label>
-      </p>
-      
-      <div class="form-group">
-        <label for="name">{{ i18n "contact_name" | default "Name" }} *</label>
-        <input type="text" class="form-control" id="name" name="name" required>
-      </div>
-      
-      <div class="form-group">
-        <label for="email">{{ i18n "contact_email" | default "Email" }} *</label>
-        <input type="email" class="form-control" id="email" name="email" required>
-      </div>
-      
-      <div class="form-group">
-        <label for="subject">{{ i18n "contact_subject" | default "Subject" }} *</label>
-        <input type="text" class="form-control" id="subject" name="subject" required>
-      </div>
-      
-      <div class="form-group">
-        <label for="message">{{ i18n "contact_message" | default "Message" }} *</label>
-        <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
-      </div>
-      
-      {{ if $block.Params.content.form.netlify.captcha }}
-        <div class="form-group">
-          <div data-netlify-recaptcha="true"></div>
-        </div>
-      {{ end }}
-      
-      <button type="submit" class="btn btn-primary">
-        {{ i18n "contact_send" | default "Send Message" }}
-      </button>
-    </form>
   </div>
 </div>
 
 <style>
-.contact-widget {
-  margin-bottom: 2rem;
+/* Modern Contact Form Styling */
+.contact-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
 }
 
-.contact-info {
-  background: #f8f9fa;
-  padding: 1.5rem;
-  border-radius: 8px;
-  margin-bottom: 1rem;
+.contact-header {
+  text-align: center;
+  margin-bottom: 3rem;
 }
 
-.contact-item {
+.contact-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #FFB76B 0%, #FFA73D 30%, #FF7C00 60%, #FF7F04 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   margin-bottom: 1rem;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.contact-subtitle {
+  font-size: 1.2rem;
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto;
+  animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+.contact-content {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+/* Contact Info Sidebar */
+.contact-info-sidebar {
+  animation: slideInLeft 0.8s ease-out 0.4s both;
+}
+
+.contact-info-card {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  backdrop-filter: blur(10px);
+}
+
+.info-title {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #FF7C00;
 }
 
-.contact-item i {
-  color: #007bff;
-  width: 20px;
+.info-title i {
+  color: #FF7C00;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: rgba(255,255,255,0.7);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.contact-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255,124,0,0.15);
+}
+
+.contact-icon {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #FFB76B 0%, #FF7C00 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.2rem;
+}
+
+.contact-details {
+  flex: 1;
+}
+
+.contact-link {
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.contact-link:hover {
+  color: #FF7C00;
+}
+
+/* Dynamic Form Styling */
+.contact-form-container {
+  animation: slideInRight 0.8s ease-out 0.6s both;
+}
+
+.form-card {
+  background: white;
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  backdrop-filter: blur(10px);
+}
+
+.dynamic-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
 }
 
 .form-group {
-  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.floating-label {
+  position: relative;
 }
 
 .form-control {
-  border-radius: 6px;
-  border: 1px solid #ced4da;
-  padding: 0.75rem;
+  width: 100%;
+  padding: 1rem 1rem 0.5rem 1rem;
+  border: 2px solid #e1e5e9;
+  border-radius: 12px;
+  font-size: 1rem;
+  background: #f8f9fa;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 1;
 }
 
 .form-control:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  outline: none;
+  border-color: #FF7C00;
+  background: white;
+  box-shadow: 0 0 0 4px rgba(255,124,0,0.1);
 }
 
-.btn-primary {
-  background: linear-gradient(to right, #FFB76B 0%, #FFA73D 30%, #FF7C00 60%, #FF7F04 100%);
+.form-control:focus + .floating-label-text,
+.form-control:not(:placeholder-shown) + .floating-label-text {
+  transform: translateY(-1.5rem) scale(0.85);
+  color: #FF7C00;
+}
+
+.floating-label-text {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
+  color: #666;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 2;
+}
+
+.floating-label-text i {
+  font-size: 0.9rem;
+}
+
+.focus-border {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #FFB76B 0%, #FF7C00 100%);
+  transition: width 0.3s ease;
+}
+
+.form-control:focus ~ .focus-border {
+  width: 100%;
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* Submit Button */
+.submit-btn {
+  position: relative;
+  background: linear-gradient(135deg, #FFB76B 0%, #FFA73D 30%, #FF7C00 60%, #FF7F04 100%);
+  color: white;
   border: none;
-  padding: 0.75rem 2rem;
-  border-radius: 6px;
+  padding: 1rem 2.5rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
   font-weight: 600;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
 }
 
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 124, 0, 0.3);
+.submit-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(255,124,0,0.4);
 }
 
-.hidden {
+.submit-btn:active {
+  transform: translateY(-1px);
+}
+
+.btn-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  transform: scale(0);
+  animation: ripple 0.6s linear;
+  pointer-events: none;
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+/* Honeypot */
+.honeypot {
   display: none;
 }
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .contact-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .contact-title {
+    font-size: 2rem;
+  }
+  
+  .form-card {
+    padding: 1.5rem;
+  }
+}
+
+/* Form Validation Styling */
+.form-control:invalid:not(:placeholder-shown) {
+  border-color: #dc3545;
+}
+
+.form-control:valid:not(:placeholder-shown) {
+  border-color: #28a745;
+}
+
+/* Loading State */
+.submit-btn.loading {
+  pointer-events: none;
+}
+
+.submit-btn.loading .btn-text {
+  opacity: 0.7;
+}
+
+.submit-btn.loading .btn-icon {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Floating label functionality
+  const formControls = document.querySelectorAll('.form-control');
+  
+  formControls.forEach(control => {
+    control.addEventListener('focus', function() {
+      this.parentElement.classList.add('focused');
+    });
+    
+    control.addEventListener('blur', function() {
+      if (!this.value) {
+        this.parentElement.classList.remove('focused');
+      }
+    });
+  });
+  
+  // Form submission with loading state
+  const form = document.querySelector('.dynamic-form');
+  const submitBtn = document.querySelector('.submit-btn');
+  
+  form.addEventListener('submit', function(e) {
+    submitBtn.classList.add('loading');
+    submitBtn.querySelector('.btn-text').textContent = 'Sending...';
+    
+    // Remove loading state after form processes
+    setTimeout(() => {
+      submitBtn.classList.remove('loading');
+      submitBtn.querySelector('.btn-text').textContent = 'Send Message';
+    }, 3000);
+  });
+  
+  // Button ripple effect
+  submitBtn.addEventListener('click', function(e) {
+    const ripple = document.createElement('div');
+    ripple.classList.add('btn-ripple');
+    
+    const rect = this.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    const x = e.clientX - rect.left - size / 2;
+    const y = e.clientY - rect.top - size / 2;
+    
+    ripple.style.width = ripple.style.height = size + 'px';
+    ripple.style.left = x + 'px';
+    ripple.style.top = y + 'px';
+    
+    this.appendChild(ripple);
+    
+    setTimeout(() => {
+      ripple.remove();
+    }, 600);
+  });
+});
+</script>
